@@ -113,9 +113,9 @@ extension GoodsViewController:UICollectionViewDataSource, UICollectionViewDelega
                 var group = menu.groups[self.selectedGroupIndex]
                 var product = group.products[indexPath.item]
         
-                let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "ProductViewController") as! ProductViewController
+                let nextViewController = ProductViewController()
                 nextViewController.productName = product.name
-                nextViewController.items = [Item(mainImageName: ProductContent(imageName: product.image.accessibilityIdentifier ?? "nil"), nestedImagesNames: product.nestedImages, title: product.name)]
+                nextViewController.items = [Item(mainImageName: ProductContent(imageName: product.image.accessibilityIdentifier ?? "nil"), nestedImagesNames: product.nestedImages, title: product.name), Item(mainImageName: ProductContent(imageName: product.image.accessibilityIdentifier ?? "nil"), nestedImagesNames: product.nestedImages, title: product.name + "color")]
                 nextViewController.modalPresentationStyle = .fullScreen
                 self.navigationController!.pushViewController(nextViewController, animated: true)
             }

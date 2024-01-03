@@ -72,7 +72,7 @@ class Menu {
     }
     func setup(){
         let p1 = Product(image: UIImage(named: "elite pro")!, name: "Nike elite Pro", description: "Basketball Backpack (32L)", amountColours: 3, price: 85, nestedImages: [ProductContent(imageName: "elite_pro_2")])
-        let p2 = Product(image: UIImage(named: "body-nike")!, name: "Nike Body", description: "Nike body with collab", amountColours: 3, price: 85, nestedImages: [ProductContent(imageName: "bode-nike-2")])
+        let p2 = Product(image: UIImage(named: "bode-nike")!, name: "Nike Body", description: "Nike body with collab", amountColours: 3, price: 85, nestedImages: [ProductContent(imageName: "bode-nike-2")])
         let p3 = Product(image: UIImage(named: "elite pro")!, name: "Nike elite Pro", description: "Basketball Backpack (32L)", amountColours: 3, price: 85, nestedImages: [ProductContent(imageName: "elite_pro_2")])
         
         let g1 = Group(name: "all", products: [p1, p2, p3])
