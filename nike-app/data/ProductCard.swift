@@ -1,36 +1,24 @@
 //
 //  ProductCard.swift
-//  nike-app
+//  nike-app2
 //
-//  Created by Гость on 02.01.2024.
+//  Created by darya on 29.12.2023.
+//  Copyright © 2023 darya. All rights reserved.
 //
-
-import Foundation
 
 import SwiftUI
 
-struct ProductContent {
-    var imageName: String
-    init(imageName: String){
-        self.imageName = imageName
-    }
-}
-
 struct ProductCard: View {
-    
-    let content: ProductContent
+
+    let imageUrl: String
+
     var body: some View {
         VStack (alignment: .leading, spacing: 2 ){
-            Image(content.imageName)
-                .resizable()
-                .padding(.horizontal, 20)
-                .scaledToFit()
+            AsyncImage(
+                url: URL(string: imageUrl)!,
+                placeholder: Text("Loading ...")
+            )
         }
     }
 }
 
-struct Item {
-    var mainImageName: ProductContent
-    var nestedImagesNames: [ProductContent]
-    var title: String
-}

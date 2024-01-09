@@ -14,6 +14,7 @@ struct Group {
 
 
 struct Product {
+    var id: Int
     var image:UIImage
     var name: String
     var description: String
@@ -71,9 +72,9 @@ class Menu {
         setup()
     }
     func setup(){
-        let p1 = Product(image: UIImage(named: "elite pro")!, name: "Nike elite Pro", description: "Basketball Backpack (32L)", amountColours: 3, price: 85, nestedImages: [ProductContent(imageName: "elite_pro_2")])
-        let p2 = Product(image: UIImage(named: "bode-nike")!, name: "Nike Body", description: "Nike body with collab", amountColours: 3, price: 85, nestedImages: [ProductContent(imageName: "bode-nike-2")])
-        let p3 = Product(image: UIImage(named: "elite pro")!, name: "Nike elite Pro", description: "Basketball Backpack (32L)", amountColours: 3, price: 85, nestedImages: [ProductContent(imageName: "elite_pro_2")])
+        let p1 = Product(id: 1, image: UIImage(named: "elite pro")!, name: "Nike elite Pro", description: "Basketball Backpack (32L)", amountColours: 3, price: 85  )
+        let p2 = Product(id: 2, image: UIImage(named: "bode-nike")!, name: "Nike Body", description: "Nike body with collab", amountColours: 3, price: 85  )
+        let p3 = Product(id: 3, image: UIImage(named: "elite pro")!, name: "Nike elite Pro", description: "Basketball Backpack (32L)", amountColours: 3, price: 85 )
         
         let g1 = Group(name: "all", products: [p1, p2, p3])
         let g2 = Group(name: "bags", products: [p1, p3])
@@ -87,9 +88,9 @@ class HomeSource{
         setup()
     }
     func setup(){
-        let p1 = Product(image: UIImage(named: "elite pro")!, name: "Nike elite Pro", description: "Basketball Backpack (32L)", amountColours: 3, price: 85, nestedImages: [ProductContent(imageName: "elite_pro_2")])
-        let p2 = Product(image: UIImage(named: "elite pro")!, name: "Nike elite Pro", description: "Basketball Backpack (32L)", amountColours: 3, price: 85, nestedImages: [ProductContent(imageName: "elite_pro_2")])
-        let p3 = Product(image: UIImage(named: "elite pro")!, name: "Nike elite Pro", description: "Basketball Backpack (32L)", amountColours: 3, price: 85, nestedImages: [ProductContent(imageName: "elite_pro_2")])
+        let p1 = Product(image: UIImage(named: "elite pro")!, name: "Nike elite Pro", description: "Basketball Backpack (32L)", amountColours: 3, price: 85])
+        let p2 = Product(image: UIImage(named: "elite pro")!, name: "Nike elite Pro", description: "Basketball Backpack (32L)", amountColours: 3, price: 85])
+        let p3 = Product(image: UIImage(named: "elite pro")!, name: "Nike elite Pro", description: "Basketball Backpack (32L)", amountColours: 3, price: 85])
         self.products = [p1, p2, p3]
     }
 }
