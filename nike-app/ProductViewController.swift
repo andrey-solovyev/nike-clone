@@ -14,20 +14,11 @@ class ProductViewController: UIViewController {
 
     var productId: Int?
     private var productName: String?
-    private var selectedProduct: ProductInfo?
-    private var items: [ProductInfo] = []
+    private var selectedProduct: File.ProductInfo?
+    private var items: [File.ProductInfo] = [] // import struct ProductInfo from data directory
     private var apiService = ApiService()
 
-    struct ExternalProduct : Decodable {
-        var id: Int
-        var title: String
-        var productInfos: [ProductInfo]
-    }
 
-    struct ProductInfo : Decodable {
-        let mainImageName: String
-        let nestedImagesNames: [String]
-    }
 
     lazy var allProductImagesCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -74,7 +65,7 @@ class ProductViewController: UIViewController {
             apiService.getProductById(id: productId!, completition: {(result) in
                 switch result {
                 case .success(let product):
-                    self.productName = product.title
+                    self.productName = product.name
                     self.navigationItem.title = self.productName
                     self.items = product.productInfos
                     if(product.productInfos.count > 0){

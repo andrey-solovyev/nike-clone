@@ -14,12 +14,34 @@ class GoodsViewController : UIViewController {
     @IBOutlet weak var productsView: UICollectionView!
     @IBOutlet weak var groupdsCollectionView: UICollectionView!
     @IBOutlet weak var navigation: UINavigationItem!
-    var menu: Menu = Menu()
-    var selectedGroupIndex = 0
+
+    private var apiService = ApiService()
+    var groups: [File.Group] = []
+    var products: [File.Product] = [] // import struct from data directory
+    var selectedGroupIndex: Int?
+
     var topicName = ""
     var tagId = 0
     override func viewDidLoad() {
         super.viewDidLoad()
+
+
+        apiService.getGroups(completition: {(result) in
+            switch result {
+            case .success(let groups):
+                self.groups = groups
+                if(groups.count > 0){
+                    self.selectedGroupIndex = 0
+                    self.products = groups[0]
+                }
+
+                self.groupdsCollectionView.reloadData()
+                self.productsView.reloadData()
+            case .failure(let error):
+                print("Error processing json data: \(error)")
+            }
+        })
+
         // Do any additional setup after loading the view.
         self.productsView.register(UINib(nibName: "ProductCell", bundle: nil), forCellWithReuseIdentifier:  "ProductCell")
         self.groupdsCollectionView.register(UINib(nibName: "GroupCell", bundle: nil), forCellWithReuseIdentifier: "GroupCell")
@@ -33,40 +55,46 @@ class GoodsViewController : UIViewController {
         navigationController?.navigationBar.topItem?.backBarButtonItem = newBackButton
         self.navigationItem.backBarButtonItem = newBackButton
     }
-    
+
     func backAction() -> Void {
         self.navigationController?.popViewController(animated: true)
     }
-    
+
     func setTopicName(topic: String){
         self.topicName = topic
     }
-    
+
     func setTagId(tagId: Int){
         self.tagId = tagId
     }
 
 }
 extension GoodsViewController:UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == groupdsCollectionView{
-            return menu.groups.count
+            if groupdsCollectionView == nil {
+                return 0
+            }
+            return groups.count
         } else {
-            let group = menu.groups[selectedGroupIndex]
+             if self.selectedGroupIndex == nil {
+                return 0
+            }
+            let group = groups[selectedGroupIndex]
             return group.products.count
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == groupdsCollectionView{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GroupCell", for: indexPath) as! GroupCell
-            let group = menu.groups[indexPath.item]
+            let group = groups[indexPath.item]
             cell.setupCell(group: group.name, isSelected: false)
             return cell
         }else{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCell
-            let group = menu.groups[selectedGroupIndex]
+            let group = groups[selectedGroupIndex]
             let product = group.products[indexPath.item]
             cell.setupCell(product: product)
             return cell
@@ -75,15 +103,15 @@ extension GoodsViewController:UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == productsView {
             let noOfCellsInRow = 2.1
-            
+
             let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-            
+
             let totalSpace = flowLayout.sectionInset.left
             + flowLayout.sectionInset.right
             + (flowLayout.minimumInteritemSpacing * CGFloat(noOfCellsInRow - 1))
-            
+
             let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(noOfCellsInRow))
-            
+
             return CGSize(width: size, height: size)
         }
         return CGSize(width:  collectionView.bounds.width/4, height: collectionView.bounds.height)
@@ -91,7 +119,7 @@ extension GoodsViewController:UICollectionViewDataSource, UICollectionViewDelega
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
 //        return 2
 //    }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
             return 5
         }
@@ -101,8 +129,8 @@ extension GoodsViewController:UICollectionViewDataSource, UICollectionViewDelega
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
             return UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         }
-        
-        
+
+
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
             if collectionView == groupdsCollectionView{
                 self.selectedGroupIndex = indexPath.item
@@ -110,7 +138,7 @@ extension GoodsViewController:UICollectionViewDataSource, UICollectionViewDelega
                 self.productsView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: false)
                 self.productsView.reloadData()
             } else if collectionView == productsView {
-                var group = menu.groups[self.selectedGroupIndex]
+                var group = groups[self.selectedGroupIndex]
                 var product = group.products[indexPath.item]
         
                 let nextViewController = ProductViewController()

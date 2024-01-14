@@ -9,14 +9,14 @@ import UIKit
 
 class ProductCell: UICollectionViewCell {
     
-    @IBOutlet weak var productImage:UIImageView!
-    
+    @IBOutlet weak var productImage: ImageLoader.AsyncImage<Text>!
+
     @IBOutlet weak var label: UILabel!
-    
+
     @IBOutlet weak var descriptionProduct: UILabel!
-    
+
     @IBOutlet weak var price: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -26,12 +26,13 @@ class ProductCell: UICollectionViewCell {
         super.prepareForReuse()
         self.productImage.image = nil
     }
-    
-    func setupCell(product: Product){
-        self.productImage.image = product.image
+
+    func setupCell(product: File.Product){
+        self.productImage.url = product.image
+        self.productImage.placeholder = "Loading ..."
         self.label.text = product.name
         self.descriptionProduct.text = product.description
-        self.price.text = product.price.description
+        self.price.text = product.price
         
     }
 }
